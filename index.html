@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full w-full overflow-hidden select-none">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Las Tablas con La Pandilla de la Rejilla</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Luckiest+Guy&family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Strict Viewport Locking - ZERO SCROLL ON ANY DEVICE */
+        html, body {
+            height: 100%;
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden !important;
+            margin: 0;
+            padding: 0;
+            touch-action: manipulation;
+            font-family: 'Fredoka', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-logo {
+            font-family: 'Luckiest Guy', cursive, sans-serif;
+        }
+
+        /* Animated Rainbow Background Gradient */
+        body {
+            background: linear-gradient(-45deg, #ff2a6d, #ffaa00, #00e676, #00b0ff, #9c27b0);
+            background-size: 400% 400%;
+            animation: gradientBG 14s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism Ultra-Rounded Containers */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+            border-radius: 28px;
+        }
+
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 1);
+            border-radius: 9999px;
+        }
+
+        /* 3D Tactile Buttons */
+        .btn-3d {
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            box-shadow: 0 5px 0 0 rgba(0, 0, 0, 0.2);
+        }
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .key-btn {
+            transition: all 0.08s ease;
+            box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.15);
+            border-radius: 18px;
+        }
+        .key-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.15);
+        }
+
+        /* Rainbow outline glow for "Todas las tablas" button */
+        .rainbow-border {
+            position: relative;
+        }
+        .rainbow-border::before {
+            content: '';
+            position: absolute;
+            top: -3px; left: -3px; right: -3px; bottom: -3px;
+            background: linear-gradient(90deg, #ff0055, #ffaa00, #00ff66, #00ccff, #9900ff);
+            border-radius: 28px;
+            z-index: -1;
+            animation: rainbowBorder 3s linear infinite;
+            background-size: 300% 300%;
+        }
+        @keyframes rainbowBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating background orbs */
+        @keyframes float-orb1 {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-25px) scale(1.08); }
+        }
+        .animate-orb1 { animation: float-orb1 6s infinite ease-in-out; }
+
+        /* Memory Card 3D Flip */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+    </style>
+</head>
+
+<body class="h-full w-full overflow-hidden text-slate-800 flex flex-col justify-between p-2 sm:p-3 md:p-4">
+
+    <!-- Background Floating Light Orbs -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute top-4 left-4 w-48 h-48 bg-amber-300/30 rounded-full blur-3xl animate-orb1"></div>
+        <div class="absolute bottom-6 right-6 w-60 h-60 bg-pink-400/30 rounded-full blur-3xl animate-orb1"></div>
+        <div class="absolute top-1/2 left-1/3 w-56 h-56 bg-cyan-300/30 rounded-full blur-3xl animate-orb1"></div>
+    </div>
+
+    <!-- Canvas for Confetti Fireworks -->
+    <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <!-- COMPACT TOP HEADER BAR -->
+    <header class="relative z-40 w-full max-w-4xl mx-auto flex-shrink-0 flex items-center justify-between gap-2 h-12 sm:h-14">
+        
+        <!-- Main Logo Container -->
+        <div onclick="showHome()" class="glass-pill px-3 py-1.5 flex items-center space-x-2 cursor-pointer hover:scale-102 transition-all shadow-md active:scale-95">
+            <img src="LOGO (2).jpg" alt="La Pandilla de la Rejilla" class="h-7 sm:h-9 w-auto object-contain" onerror="this.style.display='none'; document.getElementById('hdrLogoText').classList.remove('hidden');" />
+            
+            <!-- Fallback SVG/CSS Logo Header -->
+            <div id="hdrLogoText" class="hidden flex flex-col leading-none">
+                <span class="text-[9px] sm:text-[10px] font-black text-sky-500 tracking-tight">Aprende Matemáticas Con</span>
+                <div class="flex items-center space-x-1 font-logo text-sm sm:text-base">
+                    <span class="text-rose-600">PANDILLA</span>
+                    <span class="text-sky-500">REJILLA</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Header Elements: Stars Counter & Sound Toggle -->
+        <div class="flex items-center space-x-2">
+            <div class="glass-pill px-3 py-1 flex items-center space-x-1.5 shadow-md">
+                <span class="text-base sm:text-lg animate-bounce">⭐</span>
+                <span id="globalStars" class="text-sm sm:text-base font-black text-amber-500">0</span>
+            </div>
+
+            <button id="soundBtn" onclick="toggleAudio()" class="glass-pill p-2 text-purple-900 hover:bg-white transition-all shadow-md active:scale-90">
+                <svg id="soundOnIcon" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                </svg>
+                <svg id="soundOffIcon" class="w-5 h-5 sm:w-6 sm:h-6 hidden text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN FLEXIBLE CONTENT CONTAINER (COMPLETELY FITS IN 100DVH) -->
+    <main class="relative z-10 flex-1 min-h-0 w-full max-w-4xl mx-auto flex flex-col justify-center my-1">
+
+        <!-- ================= VIEW 1: HOME ================= -->
+        <section id="viewHome" class="h-full w-full flex flex-col justify-between gap-2">
+            
+            <!-- Hero Title Card -->
+            <div class="glass-panel p-3 sm:p-4 text-center flex flex-col items-center justify-center space-y-1 flex-shrink-0 shadow-lg">
+                <div class="flex justify-center items-center">
+                    <img src="LOGO (2).jpg" alt="La Pandilla de la Rejilla" class="max-h-12 sm:max-h-16 w-auto object-contain drop-shadow" onerror="this.style.display='none'; document.getElementById('mainSvgLogo').classList.remove('hidden');" />
+                    
+                    <div id="mainSvgLogo" class="hidden flex flex-col items-center justify-center">
+                        <span class="text-sky-500 font-extrabold text-xs sm:text-sm tracking-wide uppercase">Aprende Matemáticas Con</span>
+                        <div class="font-logo text-2xl sm:text-4xl tracking-tight leading-none my-0.5">
+                            <span class="text-rose-600">la PANDILLA</span>
+                        </div>
+                        <div class="font-logo text-2xl sm:text-4xl tracking-tight leading-none">
+                            <span class="text-sky-500">de la REJILLA</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-slate-700 font-bold text-xs sm:text-sm">
+                    ¡Selecciona una tabla o el modo <span class="text-purple-700 font-black underline decoration-wavy decoration-pink-500">mezclado</span> para jugar!
+                </p>
+            </div>
+
+            <!-- Table Selection Grid (3x3 Matrix fitting all screen heights) -->
+            <div id="tablesGrid" class="grid grid-cols-3 gap-2 sm:gap-3 flex-1 min-h-0 py-1">
+                <!-- Dynamic Tables 2..9 + Mixed Card injected via JS -->
+            </div>
+        </section>
+
+        <!-- ================= VIEW 2: TABLE MENU ================= -->
+        <section id="viewTableMenu" class="h-full w-full flex flex-col justify-between gap-2 hidden">
+            
+            <!-- Table Header Bar -->
+            <div class="glass-panel p-2.5 sm:p-3 flex items-center justify-between gap-2 flex-shrink-0">
+                <button onclick="showHome()" class="btn-3d bg-white text-purple-900 font-extrabold px-3 py-1.5 text-xs rounded-2xl flex items-center space-x-1 border border-purple-100">
+                    <span>← Inicio</span>
+                </button>
+
+                <div class="flex items-center space-x-2">
+                    <div id="tableBadgeHeader" class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 text-white text-xl sm:text-2xl font-black flex items-center justify-center shadow-md border border-white">
+                        3
+                    </div>
+                    <div>
+                        <h2 id="tableTitleHeader" class="text-lg sm:text-xl font-black text-slate-800 leading-none">Tabla del 3</h2>
+                        <span class="text-[10px] sm:text-xs font-bold text-slate-500">Elige una actividad</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7 Games Grid (Optimized compact responsive layout) -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 flex-1 min-h-0 py-1 overflow-hidden">
+                
+                <!-- Game 1: Explora -->
+                <div onclick="openGame('explora')" class="btn-3d bg-gradient-to-br from-sky-400 to-blue-600 p-3 rounded-2xl text-white cursor-pointer flex flex-col justify-between border-2 border-sky-300">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl sm:text-3xl">📖</span>
+                        <span class="bg-white/25 text-[9px] font-bold px-2 py-0.5 rounded-full">Repasar</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm sm:text-base font-black leading-tight">Explora la Tabla</h4>
+                        <p class="text-[10px] text-sky-100 font-medium hidden sm:block">Con voz y síntesis.</p>
+                    </div>
+                </div>
+
+                <!-- Game 2: El Tren Numérico -->
+                <div onclick="openGame('series')" class="btn-3d bg-gradient-to-br from-emerald-400 to-teal-600 p-3 rounded-2xl text-white cursor-pointer flex flex-col justify-between border-2 border-emerald-300">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl sm:text-3xl">🚂</span>
+                        <span class="bg-white/25 text-[9px] font-bold px-2 py-0.5 rounded-full">Secuencia</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm sm:text-base font-black leading-tight">Tren Numérico</h4>
+                        <p class="text-[10px] text-emerald-100 font-medium hidden sm:block">Rellena la serie.</p>
+                    </div>
+                </div>
+
+                <!-- Game 3: Tarjeta Rápida -->
+                <div onclick="openGame('tarjeta')" class="btn-3d bg-gradient-to-br from-amber-400 to-orange-500 p-3 rounded-2xl text-white cursor-pointer flex flex-col justify-between border-2 border-amber-300">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl sm:text-3xl">⚡</span>
+                        <span class="bg-white/25 text-[9px] font-bold px-2 py-0.5 rounded-full">Agilidad</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm sm:text-base font-black leading-tight">Tarjeta Rápida</h4>
+                        <p class="text-[10px] text-amber-100 font-medium hidden sm:block">Cálculo directo.</p>
+                    </div>
+                </div>
+
+                <!-- Game 4: El Número Secreto -->
+                <div onclick="openGame('secreto')" class="btn-3d bg-gradient-to-br from-purple-500 to-indigo-600 p-3 rounded-2xl text-white cursor-pointer flex flex-col justify-between border-2 border-purple-300">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl sm:text-3xl">🕵️</span>
+                        <span class="bg-white/25 text-[9px] font-bold px-2 py-0.5 rounded-full">Descubrir</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm sm:text-base font-black leading-tight">Número Secreto</h4>
+                        <p class="text-[10px] text-purple-100 font-medium hidden sm:block">Adivina el factor.</p>
+                    </div>
+                </div>
+
+                <!-- Game 5: Desafío de Ceros -->
+                <div onclick="openGame('ceros')" class="btn-3d bg-gradient-to-br from-pink-500 to-rose-600 p-3 rounded-2xl text-white cursor-pointer flex flex-col justify-between border-2 border-pink-300">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl sm:text-3xl">🎯</span>
+                        <span class="bg-white/25 text-[9px] font-bold px-2 py-0.5 rounded-full">×10/×100</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm sm:text-base font-black leading-tight">Desafío Ceros</h4>
+                        <p class="text-[10px] text-pink-100 font-medium hidden sm:block">Decenas y centenas.</p>
+                    </div>
+                </div>
+
+                <!-- Game 6: Parejas de Memoria -->
+                <div onclick="openGame('memoria')" class="btn-3d bg-gradient-to-br from-fuchsia-500 to-purple-700 p-3 rounded-2xl text-white cursor-pointer flex flex-col justify-between border-2 border-fuchsia-300">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl sm:text-3xl">🃏</span>
+                        <span class="bg-white/25 text-[9px] font-bold px-2 py-0.5 rounded-full">Memoria</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm sm:text-base font-black leading-tight">Parejas</h4>
+                        <p class="text-[10px] text-fuchsia-100 font-medium hidden sm:block">Empareja cartas.</p>
+                    </div>
+                </div>
+
+                <!-- Game 7: Reto 60 Segundos -->
+                <div onclick="openGame('contrarreloj')" class="col-span-2 sm:col-span-3 btn-3d bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 p-3 rounded-2xl text-white cursor-pointer flex items-center justify-between border-2 border-amber-300">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-3xl sm:text-4xl animate-bounce">⏱️</span>
+                        <div>
+                            <h4 class="text-base sm:text-lg font-black leading-none">Reto 60 Segundos</h4>
+                            <p class="text-[10px] sm:text-xs text-amber-100 font-medium">Demuestra tu velocidad máxima.</p>
+                        </div>
+                    </div>
+                    <span class="bg-white text-orange-600 font-black px-3 py-1.5 rounded-xl text-xs uppercase tracking-wider">
+                        ¡Iniciar!
+                    </span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= VIEW: GAME 1 - EXPLORA ================= -->
+        <section id="gameExplora" class="glass-panel p-3 sm:p-4 h-full w-full flex flex-col justify-between hidden">
+            <div class="flex items-center justify-between flex-shrink-0">
+                <button onclick="showTableMenu()" class="btn-3d bg-slate-100 text-slate-700 font-bold px-3 py-1 text-xs rounded-xl">← Menú</button>
+                <h3 class="text-base sm:text-xl font-black text-sky-600">📖 Explora la Tabla</h3>
+            </div>
+
+            <p class="text-center text-slate-600 font-bold text-xs flex-shrink-0">Toca para escuchar con voz 🔊</p>
+
+            <div id="exploraList" class="grid grid-cols-2 gap-1.5 sm:gap-2 flex-1 min-h-0 overflow-hidden my-1">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- ================= VIEW: GAME 2 - SERIES ================= -->
+        <section id="gameSeries" class="glass-panel p-3 sm:p-4 h-full w-full flex flex-col justify-between text-center hidden">
+            <div class="flex items-center justify-between flex-shrink-0">
+                <button onclick="showTableMenu()" class="btn-3d bg-slate-100 text-slate-700 font-bold px-3 py-1 text-xs rounded-xl">← Menú</button>
+                <h3 class="text-base sm:text-xl font-black text-emerald-600">🚂 El Tren Numérico</h3>
+            </div>
+
+            <div id="seriesContainer" class="flex flex-wrap items-center justify-center gap-1 sm:gap-1.5 my-1 flex-shrink-0">
+                <!-- Train carriages injected via JS -->
+            </div>
+
+            <!-- Keypad -->
+            <div class="w-full max-w-xs mx-auto flex-1 min-h-0 flex flex-col justify-center">
+                <div id="seriesKeypad" class="grid grid-cols-3 gap-1.5 h-full max-h-48"></div>
+            </div>
+
+            <div id="seriesFeedback" class="font-black text-xs sm:text-sm h-5 flex-shrink-0"></div>
+        </section>
+
+        <!-- ================= VIEW: GAME 3 - TARJETA RÁPIDA ================= -->
+        <section id="gameTarjeta" class="glass-panel p-3 sm:p-4 h-full w-full flex flex-col justify-between text-center hidden">
+            <div class="flex items-center justify-between flex-shrink-0">
+                <button onclick="showTableMenu()" class="btn-3d bg-slate-100 text-slate-700 font-bold px-3 py-1 text-xs rounded-xl">← Menú</button>
+                <div class="flex items-center space-x-1 glass-pill px-2 py-0.5">
+                    <span class="text-xs">🔥</span>
+                    <span id="tarjetaStreak" class="font-black text-amber-600 text-xs">0</span>
+                </div>
+            </div>
+
+            <div class="space-y-0.5 flex-shrink-0">
+                <span id="tarjetaStep" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pregunta 1 de 10</span>
+                <div id="tarjetaQuestion" class="text-3xl sm:text-5xl font-black text-slate-800">
+                    3 × 4 = ?
+                </div>
+            </div>
+
+            <div id="tarjetaDisplay" class="w-32 sm:w-40 h-10 sm:h-12 bg-white border-2 border-amber-400 rounded-2xl mx-auto flex items-center justify-center text-2xl sm:text-3xl font-black text-amber-600 shadow-inner flex-shrink-0">
+                ?
+            </div>
+
+            <div class="w-full max-w-xs mx-auto flex-1 min-h-0 flex flex-col justify-center">
+                <div id="tarjetaKeypad" class="grid grid-cols-3 gap-1.5 h-full max-h-48"></div>
+            </div>
+
+            <div id="tarjetaFeedback" class="font-black text-xs sm:text-sm h-5 flex-shrink-0"></div>
+        </section>
+
+        <!-- ================= VIEW: GAME 4 - EL NÚMERO SECRETO ================= -->
+        <section id="gameSecreto" class="glass-panel p-3 sm:p-4 h-full w-full flex flex-col justify-between text-center hidden">
+            <div class="flex items-center justify-between flex-shrink-0">
+                <button onclick="showTableMenu()" class="btn-3d bg-slate-100 text-slate-700 font-bold px-3 py-1 text-xs rounded-xl">← Menú</button>
+                <h3 class="text-base sm:text-xl font-black text-purple-600">🕵️ Número Secreto</h3>
+            </div>
+
+            <div id="secretoQuestion" class="text-3xl sm:text-4xl font-black text-slate-800 flex-shrink-0">
+                ? × 4 = 12
+            </div>
+
+            <div id="secretoDisplay" class="w-32 sm:w-40 h-10 sm:h-12 bg-white border-2 border-purple-400 rounded-2xl mx-auto flex items-center justify-center text-2xl sm:text-3xl font-black text-purple-600 shadow-inner flex-shrink-0">
+                ?
+            </div>
+
+            <div class="w-full max-w-xs mx-auto flex-1 min-h-0 flex flex-col justify-center">
+                <div id="secretoKeypad" class="grid grid-cols-3 gap-1.5 h-full max-h-48"></div>
+            </div>
+
+            <div id="secretoFeedback" class="font-black text-xs sm:text-sm h-5 flex-shrink-0"></div>
+        </section>
+
+        <!-- ================= VIEW: GAME 5 - DESAFÍO DE CEROS ================= -->
+        <section id="gameCeros" class="glass-panel p-3 sm:p-4 h-full w-full flex flex-col justify-between text-center hidden">
+            <div class="flex items-center justify-between flex-shrink-0">
+                <button onclick="showTableMenu()" class="btn-3d bg-slate-100 text-slate-700 font-bold px-3 py-1 text-xs rounded-xl">← Menú</button>
+                <h3 class="text-base sm:text-xl font-black text-rose-600">🎯 Desafío Ceros</h3>
+            </div>
+
+            <div id="cerosQuestion" class="text-3xl sm:text-4xl font-black text-slate-800 flex-shrink-0">
+                3 × 40 = ?
+            </div>
+
+            <div id="cerosDisplay" class="w-36 sm:w-44 h-10 sm:h-12 bg-white border-2 border-rose-400 rounded-2xl mx-auto flex items-center justify-center text-2xl sm:text-3xl font-black text-rose-600 shadow-inner flex-shrink-0">
+                ?
+            </div>
+
+            <div class="w-full max-w-xs mx-auto flex-1 min-h-0 flex flex-col justify-center">
+                <div id="cerosKeypad" class="grid grid-cols-3 gap-1.5 h-full max-h-48"></div>
+            </div>
+
+            <div id="cerosFeedback" class="font-black text-xs sm:text-sm h-5 flex-shrink-0"></div>
+        </section>
+
+        <!-- ================= VIEW: GAME 6 - MEMORIA ================= -->
+        <section id="gameMemoria" class="glass-panel p-3 sm:p-4 h-full w-full flex flex-col justify-between hidden">
+            <div class="flex items-center justify-between flex-shrink-0">
+                <button onclick="showTableMenu()" class="btn-3d bg-slate-100 text-slate-700 font-bold px-3 py-1 text-xs rounded-xl">← Menú</button>
+                <div class="flex items-center space-x-2 text-xs font-black text-fuchsia-800">
+                    <span>Parejas: <b id="memoMatches" class="text-sm">0/6</b></span>
+                </div>
+            </div>
+
+            <div id="memoriaGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-2 flex-1 min-h-0 my-1 overflow-hidden">
+                <!-- 12 cards injected via JS -->
+            </div>
+        </section>
+
+        <!-- ================= VIEW: GAME 7 - CONTRARRELOJ ================= -->
+        <section id="gameContrarreloj" class="glass-panel p-3 sm:p-4 h-full w-full flex flex-col justify-between text-center hidden">
+            <div class="flex items-center justify-between flex-shrink-0">
+                <button onclick="showTableMenu()" class="btn-3d bg-slate-100 text-slate-700 font-bold px-3 py-1 text-xs rounded-xl">← Salir</button>
+                
+                <div class="flex items-center space-x-1">
+                    <span class="text-sm">⏱️</span>
+                    <span id="relojTimer" class="text-lg font-black text-rose-600">60s</span>
+                </div>
+
+                <div class="flex items-center space-x-1 glass-pill px-2 py-0.5">
+                    <span class="text-[10px] font-bold text-slate-400">PUNTOS:</span>
+                    <span id="relojScore" class="text-sm font-black text-amber-500">0</span>
+                </div>
+            </div>
+
+            <!-- Progress Timer Bar -->
+            <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden flex-shrink-0">
+                <div id="relojBar" class="bg-gradient-to-r from-amber-400 to-rose-500 h-full w-full transition-all duration-1000 ease-linear"></div>
+            </div>
+
+            <div id="relojQuestion" class="text-3xl sm:text-5xl font-black text-slate-800 flex-shrink-0">
+                3 × 7 = ?
+            </div>
+
+            <div id="relojDisplay" class="w-32 sm:w-40 h-10 sm:h-12 bg-white border-2 border-orange-400 rounded-2xl mx-auto flex items-center justify-center text-2xl sm:text-3xl font-black text-orange-600 shadow-inner flex-shrink-0">
+                ?
+            </div>
+
+            <div class="w-full max-w-xs mx-auto flex-1 min-h-0 flex flex-col justify-center">
+                <div id="relojKeypad" class="grid grid-cols-3 gap-1.5 h-full max-h-48"></div>
+            </div>
+
+            <div id="relojFeedback" class="font-black text-xs sm:text-sm h-5 flex-shrink-0"></div>
+        </section>
+
+    </main>
+
+    <!-- Victory & Dialog Modal -->
+    <div id="modalOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
+        <div class="glass-panel max-w-xs w-full p-6 text-center space-y-3 border-4 border-amber-300 transform scale-100 shadow-2xl">
+            <div id="modalEmoji" class="text-5xl animate-bounce">🎉</div>
+            <h3 id="modalTitle" class="text-2xl font-black text-slate-800">¡Genial!</h3>
+            <p id="modalDesc" class="text-slate-600 font-semibold text-xs">Has completado la actividad.</p>
+            
+            <div id="modalStars" class="text-2xl">⭐ ⭐ ⭐</div>
+
+            <button onclick="closeModal()" class="btn-3d w-full bg-gradient-to-r from-amber-400 to-orange-500 text-white font-black py-2.5 text-base rounded-2xl uppercase tracking-wider">
+                Continuar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let selectedTable = 3; // 'ALL' or 2..9
+        let activeGame = 'home';
+        let audioActive = true;
+        
+        let stats = {
+            totalStars: 0,
+            tableStars: { 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 'ALL':0 }
+        };
+
+        try {
+            const saved = localStorage.getItem('rejilla_tablas_v4');
+            if (saved) stats = JSON.parse(saved);
+        } catch (e) {}
+
+        function saveStats() {
+            try {
+                localStorage.setItem('rejilla_tablas_v4', JSON.stringify(stats));
+            } catch (e) {}
+            document.getElementById('globalStars').innerText = stats.totalStars;
+        }
+
+        // Web Audio API Synthesizer
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (!audioActive) return;
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.06);
+                } else if (type === 'correct') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.07);
+                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.14);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(160, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.2);
+                }
+            } catch (e) {}
+        }
+
+        function toggleAudio() {
+            audioActive = !audioActive;
+            document.getElementById('soundOnIcon').classList.toggle('hidden', !audioActive);
+            document.getElementById('soundOffIcon').classList.toggle('hidden', audioActive);
+        }
+
+        // Confetti Canvas System
+        const canvas = document.getElementById('confettiCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function triggerConfetti() {
+            particles = [];
+            const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#ef4444', '#facc15'];
+            for (let i = 0; i < 75; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 16,
+                    vy: (Math.random() - 0.7) * 16,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    radius: Math.random() * 6 + 3,
+                    life: 80
+                });
+            }
+            animateConfetti();
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.3;
+                p.life -= 1;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                if (p.life <= 0) particles.splice(index, 1);
+            });
+            if (particles.length > 0) requestAnimationFrame(animateConfetti);
+        }
+
+        function addStars(amount) {
+            stats.totalStars += amount;
+            stats.tableStars[selectedTable] = (stats.tableStars[selectedTable] || 0) + amount;
+            saveStats();
+        }
+
+        // Navigation Router
+        function hideAllViews() {
+            document.getElementById('viewHome').classList.add('hidden');
+            document.getElementById('viewTableMenu').classList.add('hidden');
+            document.getElementById('gameExplora').classList.add('hidden');
+            document.getElementById('gameSeries').classList.add('hidden');
+            document.getElementById('gameTarjeta').classList.add('hidden');
+            document.getElementById('gameSecreto').classList.add('hidden');
+            document.getElementById('gameCeros').classList.add('hidden');
+            document.getElementById('gameMemoria').classList.add('hidden');
+            document.getElementById('gameContrarreloj').classList.add('hidden');
+        }
+
+        function showHome() {
+            playSound('click');
+            hideAllViews();
+            activeGame = 'home';
+            renderTableGrid();
+            document.getElementById('viewHome').classList.remove('hidden');
+            saveStats();
+        }
+
+        // Render 3x3 Grid for Tables 2 to 9 + Mixed ALL Card
+        function renderTableGrid() {
+            const grid = document.getElementById('tablesGrid');
+            grid.innerHTML = '';
+
+            const tableColors = {
+                2: 'from-blue-400 to-indigo-500 border-indigo-300',
+                3: 'from-amber-400 to-orange-500 border-amber-300',
+                4: 'from-emerald-400 to-teal-600 border-teal-300',
+                5: 'from-rose-400 to-pink-600 border-pink-300',
+                6: 'from-purple-400 to-indigo-600 border-indigo-300',
+                7: 'from-cyan-400 to-blue-600 border-blue-300',
+                8: 'from-fuchsia-400 to-purple-600 border-purple-300',
+                9: 'from-orange-400 to-red-600 border-red-300'
+            };
+
+            for (let t = 2; t <= 9; t++) {
+                const stars = stats.tableStars[t] || 0;
+                const card = document.createElement('div');
+                card.className = `btn-3d bg-gradient-to-br ${tableColors[t]} p-2 sm:p-3 text-white cursor-pointer flex flex-col justify-between rounded-2xl border-2`;
+                card.onclick = () => selectTable(t);
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg sm:text-2xl font-black bg-white/25 px-2 py-0.5 rounded-xl">×${t}</span>
+                        <span class="text-[10px] font-black bg-black/20 px-1.5 py-0.5 rounded-full flex items-center space-x-0.5">
+                            <span>⭐</span>
+                            <span>${stars}</span>
+                        </span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm sm:text-base font-black leading-tight">Tabla ${t}</h4>
+                        <span class="text-[9px] text-white/90 font-bold">7 juegos →</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
+
+            // Prominent Mixed ALL Card
+            const allStars = stats.tableStars['ALL'] || 0;
+            const allCard = document.createElement('div');
+            allCard.className = `rainbow-border btn-3d bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 p-2 sm:p-3 text-white cursor-pointer flex flex-col justify-between rounded-2xl border-2 border-white`;
+            allCard.onclick = () => selectTable('ALL');
+
+            allCard.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span class="text-base sm:text-xl font-black bg-white/30 px-2 py-0.5 rounded-xl">🔀 2-9</span>
+                    <span class="text-[10px] font-black bg-black/30 px-1.5 py-0.5 rounded-full flex items-center space-x-0.5">
+                        <span>⭐</span>
+                        <span>${allStars}</span>
+                    </span>
+                </div>
+                <div>
+                    <h4 class="text-sm sm:text-base font-black leading-tight">MEZCLADAS</h4>
+                    <span class="text-[9px] text-amber-200 font-bold">¡Variadas! →</span>
+                </div>
+            `;
+            grid.appendChild(allCard);
+        }
+
+        function selectTable(num) {
+            playSound('click');
+            selectedTable = num;
+            if (num === 'ALL') {
+                document.getElementById('tableBadgeHeader').innerText = '🔀';
+                document.getElementById('tableTitleHeader').innerText = 'Tablas 2 al 9';
+            } else {
+                document.getElementById('tableBadgeHeader').innerText = num;
+                document.getElementById('tableTitleHeader').innerText = `Tabla del ${num}`;
+            }
+            showTableMenu();
+        }
+
+        function showTableMenu() {
+            playSound('click');
+            hideAllViews();
+            activeGame = 'menu';
+            document.getElementById('viewTableMenu').classList.remove('hidden');
+        }
+
+        function getActiveTable() {
+            if (selectedTable === 'ALL') {
+                return Math.floor(Math.random() * 8) + 2;
+            }
+            return selectedTable;
+        }
+
+        // Keypad Renderer
+        function renderKeypad(containerId, onType, onSubmit) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            const keys = ['1','2','3','4','5','6','7','8','9','del','0','ok'];
+            
+            keys.forEach(k => {
+                const btn = document.createElement('button');
+                if (k === 'del') {
+                    btn.className = 'key-btn bg-rose-100 text-rose-700 font-black text-sm sm:text-base py-1.5 hover:bg-rose-200 border border-rose-200';
+                    btn.innerText = '⌫';
+                    btn.onclick = () => { playSound('click'); onType('del'); };
+                } else if (k === 'ok') {
+                    btn.className = 'key-btn bg-emerald-500 text-white font-black text-sm sm:text-base py-1.5 hover:bg-emerald-600 border border-emerald-600';
+                    btn.innerText = '✓';
+                    btn.onclick = () => { playSound('click'); onSubmit(); };
+                } else {
+                    btn.className = 'key-btn bg-white text-slate-800 font-black text-base sm:text-xl py-1.5 hover:bg-slate-100 border border-slate-200';
+                    btn.innerText = k;
+                    btn.onclick = () => { playSound('click'); onType(k); };
+                }
+                container.appendChild(btn);
+            });
+        }
+
+        // GAME 1: EXPLORA
+        function initExplora() {
+            const list = document.getElementById('exploraList');
+            list.innerHTML = '';
+            const tbl = selectedTable === 'ALL' ? 3 : selectedTable;
+
+            for (let i = 0; i <= 10; i++) {
+                const res = tbl * i;
+                const row = document.createElement('div');
+                row.className = 'glass-panel p-2 flex items-center justify-between cursor-pointer hover:scale-102 transition-all font-black text-slate-800 border border-white';
+                row.onclick = () => {
+                    playSound('click');
+                    if ('speechSynthesis' in window && audioActive) {
+                        window.speechSynthesis.cancel();
+                        const speak = new SpeechSynthesisUtterance(`${tbl} por ${i} es igual a ${res}`);
+                        speak.lang = 'es-ES';
+                        window.speechSynthesis.speak(speak);
+                    }
+                };
+                row.innerHTML = `
+                    <div class="flex items-center space-x-1 text-sm sm:text-base">
+                        <span class="text-purple-600">${tbl}</span>
+                        <span class="text-slate-400">×</span>
+                        <span>${i}</span>
+                    </div>
+                    <div class="text-base sm:text-lg font-black text-amber-500">${res}</div>
+                `;
+                list.appendChild(row);
+            }
+        }
+
+        // GAME 2: SERIES (TREN)
+        let seriesData = [];
+        let activeSeriesIdx = -1;
+
+        function initSeries() {
+            seriesData = [];
+            const tbl = getActiveTable();
+            const missing = new Set();
+            while (missing.size < 3) missing.add(Math.floor(Math.random() * 9) + 1);
+
+            for (let i = 0; i <= 10; i++) {
+                const val = tbl * i;
+                seriesData.push({ expected: val, val: missing.has(i) ? '' : val.toString(), isMissing: missing.has(i) });
+            }
+
+            activeSeriesIdx = seriesData.findIndex(d => d.isMissing);
+            renderSeriesTrain();
+            renderKeypad('seriesKeypad', handleSeriesType, checkSeriesAnswer);
+            document.getElementById('seriesFeedback').innerText = '';
+        }
+
+        function renderSeriesTrain() {
+            const container = document.getElementById('seriesContainer');
+            container.innerHTML = '';
+
+            seriesData.forEach((item, idx) => {
+                const box = document.createElement('div');
+                if (!item.isMissing) {
+                    box.className = 'w-8 h-10 sm:w-10 sm:h-12 bg-emerald-100 border-2 border-emerald-400 rounded-xl flex items-center justify-center font-black text-emerald-800 text-xs sm:text-sm';
+                    box.innerText = item.expected;
+                } else {
+                    const isActive = activeSeriesIdx === idx;
+                    box.className = `w-8 h-10 sm:w-10 sm:h-12 ${isActive ? 'bg-amber-100 border-2 border-amber-500 scale-105' : 'bg-white border-2 border-dashed border-slate-300'} rounded-xl flex items-center justify-center font-black text-amber-600 text-xs sm:text-sm cursor-pointer`;
+                    box.innerText = item.val || '?';
+                    box.onclick = () => { playSound('click'); activeSeriesIdx = idx; renderSeriesTrain(); };
+                }
+                container.appendChild(box);
+            });
+        }
+
+        function handleSeriesType(k) {
+            if (activeSeriesIdx === -1) return;
+            if (k === 'del') {
+                seriesData[activeSeriesIdx].val = '';
+            } else {
+                if (seriesData[activeSeriesIdx].val.length < 3) seriesData[activeSeriesIdx].val += k;
+            }
+            renderSeriesTrain();
+        }
+
+        function checkSeriesAnswer() {
+            let ok = true;
+            let complete = true;
+            seriesData.forEach(d => {
+                if (d.isMissing) {
+                    if (d.val === '') complete = false;
+                    if (parseInt(d.val) !== d.expected) ok = false;
+                }
+            });
+
+            const fb = document.getElementById('seriesFeedback');
+            if (!complete) {
+                fb.className = 'text-amber-600';
+                fb.innerText = '⚠️ Rellena todos los vagones.';
+                playSound('wrong');
+                return;
+            }
+
+            if (ok) {
+                playSound('correct');
+                triggerConfetti();
+                addStars(2);
+                openModal('¡Tren Completo!', 'Has completado la secuencia perfectamente.', 2);
+            } else {
+                playSound('wrong');
+                fb.className = 'text-rose-500';
+                fb.innerText = '❌ Revisa los números.';
+            }
+        }
+
+        // QUIZ GAMES (TARJETA, SECRETO, CEROS)
+        let currentQuestion = { q: '', a: 0 };
+        let quizInput = '';
+        let quizStep = 1;
+        let quizStreak = 0;
+
+        function initQuiz(mode) {
+            quizStep = 1;
+            quizStreak = 0;
+            if (mode === 'tarjeta') document.getElementById('tarjetaStreak').innerText = quizStreak;
+            nextQuizQuestion(mode);
+        }
+
+        function nextQuizQuestion(mode) {
+            quizInput = '';
+            const tbl = getActiveTable();
+            const factor = Math.floor(Math.random() * 11);
+
+            if (mode === 'tarjeta') {
+                currentQuestion = { q: `${tbl} × ${factor} = ?`, a: tbl * factor };
+                document.getElementById('tarjetaStep').innerText = `Pregunta ${quizStep} de 10`;
+                document.getElementById('tarjetaQuestion').innerText = currentQuestion.q;
+                document.getElementById('tarjetaDisplay').innerText = '?';
+                document.getElementById('tarjetaFeedback').innerText = '';
+                renderKeypad('tarjetaKeypad', (k) => handleQuizType(k, 'tarjetaDisplay'), () => submitQuiz('tarjeta'));
+            } else if (mode === 'secreto') {
+                const hideFirst = Math.random() > 0.5;
+                const prod = tbl * factor;
+                if (hideFirst) {
+                    currentQuestion = { q: `? × ${factor} = ${prod}`, a: tbl };
+                } else {
+                    currentQuestion = { q: `${tbl} × ? = ${prod}`, a: factor };
+                }
+                document.getElementById('secretoQuestion').innerText = currentQuestion.q;
+                document.getElementById('secretoDisplay').innerText = '?';
+                document.getElementById('secretoFeedback').innerText = '';
+                renderKeypad('secretoKeypad', (k) => handleQuizType(k, 'secretoDisplay'), () => submitQuiz('secreto'));
+            } else if (mode === 'ceros') {
+                const type = Math.floor(Math.random() * 2);
+                const val = type === 0 ? factor * 10 : factor * 100;
+                currentQuestion = { q: `${tbl} × ${val} = ?`, a: tbl * val };
+                document.getElementById('cerosQuestion').innerText = currentQuestion.q;
+                document.getElementById('cerosDisplay').innerText = '?';
+                document.getElementById('cerosFeedback').innerText = '';
+                renderKeypad('cerosKeypad', (k) => handleQuizType(k, 'cerosDisplay'), () => submitQuiz('ceros'));
+            }
+        }
+
+        function handleQuizType(k, displayId) {
+            if (k === 'del') {
+                quizInput = quizInput.slice(0, -1);
+            } else {
+                if (quizInput.length < 5) quizInput += k;
+            }
+            document.getElementById(displayId).innerText = quizInput || '?';
+        }
+
+        function submitQuiz(mode) {
+            if (!quizInput) return;
+            const ans = parseInt(quizInput);
+            const fb = document.getElementById(`${mode}Feedback`);
+
+            if (ans === currentQuestion.a) {
+                playSound('correct');
+                fb.className = 'text-emerald-500 font-black animate-bounce';
+                fb.innerText = '¡Excelente! 🌟';
+                quizStreak++;
+                if (mode === 'tarjeta') document.getElementById('tarjetaStreak').innerText = quizStreak;
+
+                setTimeout(() => {
+                    if (quizStep >= 10) {
+                        triggerConfetti();
+                        addStars(3);
+                        openModal('¡Magnífico!', 'Has completado las preguntas.', 3);
+                    } else {
+                        quizStep++;
+                        nextQuizQuestion(mode);
+                    }
+                }, 700);
+            } else {
+                playSound('wrong');
+                fb.className = 'text-rose-500 font-black';
+                fb.innerText = `Era ${currentQuestion.a}`;
+                quizStreak = 0;
+                if (mode === 'tarjeta') document.getElementById('tarjetaStreak').innerText = quizStreak;
+
+                setTimeout(() => {
+                    if (quizStep >= 10) {
+                        openModal('¡Bien intentado!', '¡Sigue practicando!', 1);
+                    } else {
+                        quizStep++;
+                        nextQuizQuestion(mode);
+                    }
+                }, 1200);
+            }
+        }
+
+        // GAME 6: MEMORIA
+        let memoCards = [];
+        let memoFlipped = [];
+        let memoMatches = 0;
+
+        function initMemoria() {
+            memoMatches = 0;
+            memoFlipped = [];
+            document.getElementById('memoMatches').innerText = '0/6';
+
+            memoCards = [];
+            for (let idx = 0; idx < 6; idx++) {
+                const tbl = getActiveTable();
+                const m = Math.floor(Math.random() * 11);
+                memoCards.push({ id: idx, val: `${tbl}×${m}`, match: idx });
+                memoCards.push({ id: idx + 100, val: `${tbl * m}`, match: idx });
+            }
+
+            memoCards.sort(() => Math.random() - 0.5);
+            renderMemoriaGrid();
+        }
+
+        function renderMemoriaGrid() {
+            const grid = document.getElementById('memoriaGrid');
+            grid.innerHTML = '';
+
+            memoCards.forEach((card, index) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'h-full rounded-2xl cursor-pointer perspective-1000 min-h-0';
+                const isFlipped = card.isFlipped || card.isMatched;
+
+                cardEl.innerHTML = `
+                    <div class="w-full h-full duration-300 transform-style-3d transition-transform ${isFlipped ? 'rotate-y-180' : ''}">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-fuchsia-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-2xl font-black shadow border border-fuchsia-300 backface-hidden">
+                            ?
+                        </div>
+                        <div class="absolute inset-0 ${card.isMatched ? 'bg-emerald-100 border-emerald-400 text-emerald-800' : 'bg-white border-fuchsia-400 text-slate-800'} border-2 rounded-2xl flex items-center justify-center text-sm sm:text-lg font-black shadow rotate-y-180 backface-hidden">
+                            ${card.val}
+                        </div>
+                    </div>
+                `;
+                cardEl.onclick = () => onMemoClick(index);
+                grid.appendChild(cardEl);
+            });
+        }
+
+        function onMemoClick(idx) {
+            const card = memoCards[idx];
+            if (card.isFlipped || card.isMatched || memoFlipped.length >= 2) return;
+
+            playSound('click');
+            card.isFlipped = true;
+            memoFlipped.push({ idx, card });
+            renderMemoriaGrid();
+
+            if (memoFlipped.length === 2) {
+                const [c1, c2] = memoFlipped;
+                if (c1.card.match === c2.card.match) {
+                    playSound('correct');
+                    c1.card.isMatched = true;
+                    c2.card.isMatched = true;
+                    memoMatches++;
+                    document.getElementById('memoMatches').innerText = `${memoMatches}/6`;
+                    memoFlipped = [];
+
+                    if (memoMatches === 6) {
+                        setTimeout(() => {
+                            triggerConfetti();
+                            addStars(3);
+                            openModal('¡Memoria Genial!', 'Encontraste todas las parejas.', 3);
+                        }, 400);
+                    }
+                } else {
+                    playSound('wrong');
+                    setTimeout(() => {
+                        c1.card.isFlipped = false;
+                        c2.card.isFlipped = false;
+                        memoFlipped = [];
+                        renderMemoriaGrid();
+                    }, 800);
+                }
+            }
+        }
+
+        // GAME 7: CONTRARRELOJ
+        let relojTimer = 60;
+        let relojInterval = null;
+        let relojScore = 0;
+
+        function initContrarreloj() {
+            relojTimer = 60;
+            relojScore = 0;
+            document.getElementById('relojScore').innerText = '0';
+            document.getElementById('relojTimer').innerText = '60s';
+            document.getElementById('relojBar').style.width = '100%';
+            document.getElementById('relojFeedback').innerText = '';
+
+            if (relojInterval) clearInterval(relojInterval);
+            relojInterval = setInterval(updateReloj, 1000);
+
+            nextRelojQuestion();
+        }
+
+        function updateReloj() {
+            relojTimer--;
+            document.getElementById('relojTimer').innerText = `${relojTimer}s`;
+            document.getElementById('relojBar').style.width = `${(relojTimer / 60) * 100}%`;
+
+            if (relojTimer <= 0) {
+                clearInterval(relojInterval);
+                playSound('correct');
+                triggerConfetti();
+                const stars = relojScore >= 12 ? 3 : (relojScore >= 6 ? 2 : 1);
+                addStars(stars);
+                openModal('¡Tiempo Agotado!', `Lograste ${relojScore} aciertos en 60s.`, stars);
+            }
+        }
+
+        function nextRelojQuestion() {
+            quizInput = '';
+            const tbl = getActiveTable();
+            const f = Math.floor(Math.random() * 11);
+            currentQuestion = { q: `${tbl} × ${f} = ?`, a: tbl * f };
+            document.getElementById('relojQuestion').innerText = currentQuestion.q;
+            document.getElementById('relojDisplay').innerText = '?';
+            renderKeypad('relojKeypad', (k) => handleQuizType(k, 'relojDisplay'), submitReloj);
+        }
+
+        function submitReloj() {
+            if (!quizInput || relojTimer <= 0) return;
+            const ans = parseInt(quizInput);
+            const fb = document.getElementById('relojFeedback');
+
+            if (ans === currentQuestion.a) {
+                playSound('correct');
+                relojScore++;
+                document.getElementById('relojScore').innerText = relojScore;
+                fb.className = 'text-emerald-500 font-black';
+                fb.innerText = '¡+1 Punto! ⚡';
+                nextRelojQuestion();
+            } else {
+                playSound('wrong');
+                fb.className = 'text-rose-500 font-black';
+                fb.innerText = '❌ ¡Siguiente!';
+                nextRelojQuestion();
+            }
+        }
+
+        // Router
+        function openGame(gameKey) {
+            playSound('click');
+            hideAllViews();
+            activeGame = gameKey;
+
+            if (gameKey === 'explora') {
+                document.getElementById('gameExplora').classList.remove('hidden');
+                initExplora();
+            } else if (gameKey === 'series') {
+                document.getElementById('gameSeries').classList.remove('hidden');
+                initSeries();
+            } else if (gameKey === 'tarjeta' || gameKey === 'secreto' || gameKey === 'ceros') {
+                const map = { 'tarjeta': 'gameTarjeta', 'secreto': 'gameSecreto', 'ceros': 'gameCeros' };
+                document.getElementById(map[gameKey]).classList.remove('hidden');
+                initQuiz(gameKey);
+            } else if (gameKey === 'memoria') {
+                document.getElementById('gameMemoria').classList.remove('hidden');
+                initMemoria();
+            } else if (gameKey === 'contrarreloj') {
+                document.getElementById('gameContrarreloj').classList.remove('hidden');
+                initContrarreloj();
+            }
+        }
+
+        function openModal(title, desc, stars = 3) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalDesc').innerText = desc;
+            let s = '';
+            for (let i = 0; i < stars; i++) s += '⭐ ';
+            document.getElementById('modalStars').innerText = s;
+            document.getElementById('modalOverlay').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            playSound('click');
+            document.getElementById('modalOverlay').classList.add('hidden');
+            if (relojInterval) clearInterval(relojInterval);
+            showTableMenu();
+        }
+
+        // Physical Keyboard Support
+        window.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') {
+                if (activeGame === 'tarjeta' || activeGame === 'secreto' || activeGame === 'ceros') {
+                    handleQuizType(e.key, `${activeGame}Display`);
+                } else if (activeGame === 'contrarreloj') {
+                    handleQuizType(e.key, 'relojDisplay');
+                } else if (activeGame === 'series') {
+                    handleSeriesType(e.key);
+                }
+            } else if (e.key === 'Backspace') {
+                if (activeGame === 'tarjeta' || activeGame === 'secreto' || activeGame === 'ceros') {
+                    handleQuizType('del', `${activeGame}Display`);
+                } else if (activeGame === 'contrarreloj') {
+                    handleQuizType('del', 'relojDisplay');
+                } else if (activeGame === 'series') {
+                    handleSeriesType('del');
+                }
+            } else if (e.key === 'Enter') {
+                if (activeGame === 'tarjeta' || activeGame === 'secreto' || activeGame === 'ceros') {
+                    submitQuiz(activeGame);
+                } else if (activeGame === 'contrarreloj') {
+                    submitReloj();
+                } else if (activeGame === 'series') {
+                    checkSeriesAnswer();
+                }
+            }
+        });
+
+        window.onload = function() {
+            renderTableGrid();
+            document.getElementById('globalStars').innerText = stats.totalStars;
+        };
+    </script>
+</body>
+</html>
